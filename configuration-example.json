@@ -1,0 +1,30 @@
+{
+	"itmsFile" : "/path/to/itms/package",
+	"software_url" : "http://app-marketing-url",
+	"privacy_url" : "http://privacy-policy-url",
+	"support_url" : "http://support-url",
+	"locales" : {
+		"en-US" 		: {
+			"description" 	: "/path/to/description/text",
+			"version_whats_new"		: "/path/to/whatsnew/text",
+			"keywords"		: [
+				"List",
+				"Of",
+				"ITunesConnect",
+				"Keywords"
+				],
+			"screenshots" : "/path/to/screenshots/"
+		},
+		"es-ES" 		: {
+			"description" 	: "/path/to/spanish/description/text",
+			"version_whats_new"		: "/path/to/spanish/whatsnew/text",
+			"keywords"		: [
+				"List",
+				"Of",
+				"ITunesConnect",
+				"Keywords"
+				],
+			"screenshots" : "/path/to/spanish/screenshots/"
+		}		
+	}
+}
