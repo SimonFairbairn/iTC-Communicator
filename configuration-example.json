@@ -1,30 +1,44 @@
 {
-	"itmsFile" : "/path/to/itms/package",
-	"software_url" : "http://app-marketing-url",
-	"privacy_url" : "http://privacy-policy-url",
-	"support_url" : "http://support-url",
+	"sku" : "com.exaple.itmsp",
+	"appleID" : "yourappleid@example.com",
+	"iaps" : [{
+		"id" : "com.example.app.iap1",
+		"ref" : "IAP 1",
+		"type" : "non-consumable",
+		"price_tier" : "3",
+		"screenshot" : "/path/to/screenshot/iap0.png",
+		"locales" : {
+			"en-US" : {
+				"title" : "Algebra questions",
+				"description" : "Algebra questions"
+			}
+		}
+	}
+	],
 	"locales" : {
 		"en-US" 		: {
+			"title"			: "App Title",
 			"description" 	: "/path/to/description/text",
 			"version_whats_new"		: "/path/to/whatsnew/text",
 			"keywords"		: [
-				"List",
-				"Of",
-				"ITunesConnect",
-				"Keywords"
+				"Keyword 1"
 				],
-			"screenshots" : "/path/to/screenshots/"
+			"screenshots" : "/path/to/Screenshots",
+			"software_url" : "http://app-marketing-url",
+			"privacy_url" : "http://privacy-policy-url",
+			"support_url" : "http://support-url",
 		},
 		"es-ES" 		: {
-			"description" 	: "/path/to/spanish/description/text",
-			"version_whats_new"		: "/path/to/spanish/whatsnew/text",
+			"title"			: "App Title In Spanish",
+			"description" 	: "description-es-ES.txt",
+			"version_whats_new"		: "whatsnew-es-ES.txt",
 			"keywords"		: [
-				"List",
-				"Of",
-				"ITunesConnect",
-				"Keywords"
 				],
-			"screenshots" : "/path/to/spanish/screenshots/"
-		}		
+			"screenshots" : "/path/to/Screenshots",
+			"localise_screenshots" : true,
+			"software_url" : "http://app-marketing-url-spanish",
+			"privacy_url" : "http://privacy-policy-url-spanish",
+			"support_url" : "http://support-url-spanish",
+		}				
 	}
 }

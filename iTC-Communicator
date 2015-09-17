@@ -1,0 +1,103 @@
+#! /bin/bash
+
+SOURCE="${BASH_SOURCE[0]}"
+while [ -h "$SOURCE" ]; do # resolve $SOURCE until the file is no longer a symlink
+  DIR="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
+  SOURCE="$(readlink "$SOURCE")"
+  [[ $SOURCE != /* ]] && SOURCE="$DIR/$SOURCE" # if $SOURCE was a relative symlink, we need to resolve it relative to the path where the symlink file was located
+done
+DIR="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
+
+upload="no"
+verify="no"
+location="no"
+update="no"
+version="0"
+configuration="configuration.json"
+
+# p = password, c = configuration file, v = version to update, s = location
+while getopts "p:c:v:l:uf" opt; do
+	case $opt in
+		s)
+			location=$OPTARG
+		;;
+		v) 
+			version=$OPTARG
+			update="yes"
+		;;
+		p) 
+			password=$OPTARG
+		;;
+		c)
+			configuration=$OPTARG
+		;;
+		u) 
+			upload="yes"
+		;;
+		f) 
+			verify="yes"
+		;;		
+
+		\?)
+			echo "Invalid option: -$OPTARG" >&2
+			exit 1
+		;;		
+		:)
+			echo "option -$OPTARG requires an argument" >&2
+			exit 1
+		;;		
+	esac
+done
+
+
+
+if [ "$update" == "yes" ]; then
+	if [ "$location" == "no" ]; then
+		php $DIR/iTCCommunicator.php -v $version -c $configuration
+	else
+		php $DIR/iTCCommunicator.php -v $version -p $location -c $configuration
+	fi
+	exit 1
+fi
+
+
+if [ "$password" == "" ]; then
+
+	echo "Valid options are: "
+	echo "p: Your iTunesConnect password (required)"	
+	echo "f: Verify your upload"
+	echo "u: Upload package to iTunesConnect"	
+	echo "c: Specify a different location for your configuration"
+	echo "v: Specify the version number that you would like to update"
+	echo "s: The location of your package file"	
+
+
+	echo "ERROR: Password required"
+	exit 1
+fi
+
+currentDir=$(pwd)
+url=$(php $DIR/readConfiguration.php -i -c $configuration)
+sku=$(php $DIR/readConfiguration.php -s -c $configuration)
+id=$(php $DIR/readConfiguration.php -c $configuration)
+
+
+
+if [ "$sku" == "" ]; then
+	echo "ERROR: Configuration file not found"
+fi
+
+cd "/Applications/Xcode.app/Contents/Applications/Application Loader.app/Contents/itms/bin"
+
+if [ "$upload" == "yes" ]; then
+	echo "Uploading file from $url"
+	./iTMSTransporter -m upload -f "$url" -u $id -p "$password"
+elif [ "$verify" == "yes" ]; then
+	echo "Verifying..."
+	./iTMSTransporter  -m verify -f "$url" -u $id -p "$password"
+else
+	
+	./iTMSTransporter -m lookupMetadata -u $id -p "$password" -destination "$currentDir" -vendor_id "$sku"
+fi
+
+
